@@ -37,13 +37,21 @@ app.get('/api/notes', (req, res) => {
 
 // POST api/notes
 app.post('/api/notes', (req, res) => {
+    //destructure
+    const newnote = {id, note} = req.body;
+
     readFileAsync("db/db.json", "utf-8")
-    .then(notes => res.json(JSON.parse(notes)))
+    .then(notes => {
+        const newOnes = JSON.parse(notes)
+        return writeFileAsync("db/db.json", JSON.stringify([note, newOnes]))
+    })
+    .then(() => res.json(JSON.parse(newnote)))
     .catch(err => res.json(err))
 });
 
 
 // DELETE api/notes
+// not finishing
 app.delete('/api/notes/:id', (req, res) => {
     readFileAsync("db/db.json", "utf-8")
 });
